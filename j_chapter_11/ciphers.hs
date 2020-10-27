@@ -6,15 +6,20 @@ encode2 :: String -> String -> String
 encode2 toEncode keyword =
   doEncode2 toEncode (concat . repeat $ keyword) ""
 
+doEncode2 :: String -> String -> String -> String
 doEncode2 [] keyword encoded = encoded
-doEncode2 (e:toEncode) (k:keyword) encoded =
-  if e == ' ' then
-    doEncode2 toEncode (k : keyword) (encoded ++ " " )
-  else
-    doEncode2 toEncode keyword (encoded ++ encodeChar e k )
+doEncode2 (e:toEncode) (k:keyword) encoded
+  | e == ' ' = doEncode2 toEncode (k : keyword) (encoded ++ " " )
+  | otherwise = doEncode2 toEncode keyword (encoded ++ [encodeChar e k] )
 
+encodeChar :: Char -> Char -> Char
 encodeChar char key =
-  [chr ((((adjust char) + (adjust key)) `mod` 26) + 65)]
+  chr
+  . ((+) 65)
+  . ((flip mod) 26)
+  . ((+) (adjust key))
+  . adjust
+  $ char
 
 adjust c =
   (ord c) - 65
