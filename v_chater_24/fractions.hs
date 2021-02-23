@@ -29,3 +29,16 @@ main = do
   print $ parseFraction' shouldAlsoWork
   print $ parseFraction' alsoBad
   print $ parseFraction' badFraction
+
+-- try try exercise
+
+
+parseFractionOrDecimal :: Parser (Either Rational Integer)
+parseFractionOrDecimal =
+  (parseFraction >>= return . Left) <|>
+  (decimal >>= return . Right)
+
+parseFractionOrDecimal :: Parser (Either Rational Integer)
+parseFractionOrDecimal =
+  (parseFraction >>= return . Left) <|>
+  (decimal >>= return . Right)
